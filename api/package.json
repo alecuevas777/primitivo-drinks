@@ -1,0 +1,8 @@
+{
+  "name": "primitivos-drinks-api",
+  "private": true,
+  "scripts": {
+    "dev": "php -S localhost:8000 -t Public Public/index.php",
+    "start": "php -S localhost:8000 -t Public Public/index.php"
+  }
+}

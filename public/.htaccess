@@ -1,0 +1,74 @@
+RewriteEngine On
+RewriteBase /
+
+# ---------------------------------------------------------------------------
+# HTTPS obligatorio
+# ---------------------------------------------------------------------------
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ---------------------------------------------------------------------------
+# Canonizar dominio (www → sin www)
+# ---------------------------------------------------------------------------
+RewriteCond %{HTTP_HOST} ^www\.primitivosdrinks\.cl$ [NC]
+RewriteRule ^ https://primitivosdrinks.cl%{REQUEST_URI} [L,R=301]
+
+# ---------------------------------------------------------------------------
+# Seguridad / cabeceras
+# ---------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Compresión
+# ---------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Caché de assets estáticos
+# ---------------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# API PHP → api/Public/index.php
+# ---------------------------------------------------------------------------
+RewriteRule ^api(?:/.*)?$ api/Public/index.php [QSA,L]
+
+# ---------------------------------------------------------------------------
+# Uploads de productos (el frontend pide /uploads/...)
+# ---------------------------------------------------------------------------
+RewriteRule ^uploads/(.*)$ api/Public/uploads/$1 [L]
+
+# ---------------------------------------------------------------------------
+# SPA React: rutas del frontend → index.html
+# ---------------------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/api
+RewriteCond %{REQUEST_URI} !^/uploads
+RewriteRule ^ index.html [L]
+
+# ---------------------------------------------------------------------------
+# Evitar listado de directorios
+# ---------------------------------------------------------------------------
+Options -Indexes

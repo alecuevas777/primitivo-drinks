@@ -1,0 +1,105 @@
+.wrapper {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.labelRow {
+  display: none;
+}
+
+.scrollHint {
+  display: none;
+}
+
+.scrollWrap {
+  position: relative;
+}
+
+.scroll {
+  display: flex;
+  gap: 0.55rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.15rem 0.55rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.05rem;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
+}
+
+.pill:hover {
+  transform: translateY(-1px);
+  border-color: #cfc6b6;
+}
+
+.pillActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #0a0a0a;
+  font-weight: 800;
+}
+
+.pillActive:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #0a0a0a;
+}
+
+.fadeEdge {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0.55rem;
+  width: 2.75rem;
+  background: linear-gradient(to right, transparent, var(--color-bg));
+}
+
+@media (max-width: 639px) {
+  .scroll {
+    padding: 0.1rem 0.1rem 0.35rem;
+    gap: 0.45rem;
+  }
+
+  .pill {
+    padding: 0.58rem 0.9rem;
+    font-size: 0.75rem;
+  }
+
+  .fadeEdge {
+    bottom: 0.35rem;
+    width: 2rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fadeEdge {
+    display: none;
+  }
+}

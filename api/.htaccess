@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /api/
+
+# Si el archivo/carpeta existe (p. ej. nada), sírvelo; si no, al front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ Public/index.php [QSA,L]

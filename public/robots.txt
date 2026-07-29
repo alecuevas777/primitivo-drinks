@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: %VITE_SITE_URL%/sitemap.xml
